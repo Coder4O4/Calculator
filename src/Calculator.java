@@ -1,8 +1,13 @@
+import MenuFunctions.CalculatorMenuBar;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 
 public class Calculator extends JFrame {
+    private JMenuBar menuBar;
+    private JLabel recentEntry;
     private JPanel history , keypad ;
     private JTextArea screen , recentHistory;
     private JButton viewHistory , btn1 , btn2 , btn3 , btn4 , btn5 , btn6 , btn7 , btn8 ,
@@ -20,8 +25,20 @@ public class Calculator extends JFrame {
     public Calculator()
     {
         setLayout(null);
+
+        // initialize menu bar
+        menuBar = new JMenuBar();
+        CalculatorMenuBar calculatorMenuBar = new CalculatorMenuBar(menuBar , this);
+
+        //JLabel
+        recentEntry = new JLabel("Calculations");
+        Font font = new Font("Arial" , Font.BOLD , 20);
+        recentEntry.setFont(font);
+
         //initialise panels
         history = new JPanel();
+        history.setLayout(new BorderLayout());
+        history.setBorder( new EmptyBorder(10 , 10 , 10 , 10));
 
         //Set Keyboard
         grid = new GridLayout(4 , 4 , 10 , 10);
@@ -84,9 +101,20 @@ public class Calculator extends JFrame {
         screen = new JTextArea();
         screen.setEnabled(false);
         screen.setDisabledTextColor(Color.black);
+        Font font1 = new Font("Arial" , Font.PLAIN , 15);
+        screen.setFont(font1);
+        screen.setBorder( new EmptyBorder(10 , 10 , 10 , 10));
 
+        // Recent calculations and their history
         recentHistory = new JTextArea("History");
         recentHistory.setEnabled(false);
+        recentHistory.setBorder( new EmptyBorder(30 , 0 , 0 , 0));
+        recentHistory.setDisabledTextColor(Color.GRAY);
+        Font font2 = new Font("Arial" , Font.BOLD , 12);
+        recentHistory.setFont(font2);
+
+        history.add("North" , recentEntry);
+        history.add("Center" , recentHistory);
 
         //initialise button
         viewHistory = new JButton("R\nE\nC");
@@ -113,6 +141,7 @@ public class Calculator extends JFrame {
         add(viewHistory);
         add(keypad);
         add(history);
+        setJMenuBar(menuBar);
 
         // Add Clicks Events
         btn1.addActionListener(new ActionListener() {
@@ -235,7 +264,7 @@ public class Calculator extends JFrame {
                 resetOperation();
             }
         });
-        setSize(600 , 560 );
+        setSize(600 , 580 );
         setVisible(true);
         getContentPane().setBackground(Color.black);
     }
